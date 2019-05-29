@@ -1,0 +1,13 @@
+$spacing: 8px;
+$gutter-mult: 3;
+
+.container {
+  width: 100%;
+  max-width: rem(1028px);
+  margin: 0 auto;
+  padding: 0 rem($spacing * $gutter-mult);
+}
+
+.row {
+  width: 100%;
+}

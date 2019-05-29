@@ -1,0 +1,7 @@
+{
+  "extends": "eslint-config-okiba-gang",
+  "root": true,
+  "env": {
+    "browser": true
+  }
+}

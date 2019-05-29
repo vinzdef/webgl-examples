@@ -1,0 +1,8 @@
+$font-size-default: 16px;
+
+@function rem($pixels) {
+  @if (unitless($pixels)) {
+    $pixels: $pixels * 1px;
+  }
+  @return #{$pixels / $font-size-default}rem;
+}
