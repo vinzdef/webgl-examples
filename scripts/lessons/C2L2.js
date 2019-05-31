@@ -5,8 +5,8 @@ import frag from '~/shaders/C2L2/point.frag'
 
 export default class C2L2 extends BaseChapter {
   prepare(gl) {
-    gl.clearColor(0.0, 0.0, 0.0, 1.0)
     initShaders(gl, vert, frag)
+    gl.clearColor(0.0, 0.0, 0.0, 1.0)
   }
 
   draw(gl) {

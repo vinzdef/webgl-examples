@@ -14,7 +14,11 @@ export default class BaseChapter extends Component {
 
     this.setSizes()
     on(window, 'resize', _ => this.setSizes())
+    this.onClick && on(this.ui.scene, 'click', this.onClick.bind(this))
+    requestAnimationFrame(this.init)
+  }
 
+  init = _ => {
     this.prepare && this.prepare(this.gl)
     requestAnimationFrame(this.loop)
   }
