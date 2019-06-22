@@ -32,8 +32,8 @@ export default class BaseChapter extends Component {
   }
 
   setSizes() {
-    this.ui.scene.width = this.S.W = window.innerWidth * window.devicePixelRatio
-    this.ui.scene.height = this.S.H = window.innerHeight * window.devicePixelRatio
+    this.ui.scene.width = this.S.W = window.innerWidth
+    this.ui.scene.height = this.S.H = window.innerHeight
     this.gl.viewport(0, 0, this.S.W, this.S.H)
   }
 }

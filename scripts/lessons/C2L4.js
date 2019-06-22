@@ -1,5 +1,4 @@
 import BaseChapter from '~/utils/base-chapter'
-import {on} from '@okiba/dom'
 import {initShaders} from '~/lib/cuon-utils'
 import vert from '~/shaders/C2L4/point.vert'
 import frag from '~/shaders/C2L4/point.frag'

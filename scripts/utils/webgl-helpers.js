@@ -1,5 +1,3 @@
 export function toClipSpace(dim, max, invert) {
-  return invert
-    ? (max / 2 - dim) / (max / 2)
-    : (dim - max / 2) / (max / 2)
+  return (((dim / max) * 2) - 1) * (invert ? -1 : 1)
 }
