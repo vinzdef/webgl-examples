@@ -25,8 +25,8 @@ export default class BaseChapter extends Component {
 
   loop = _ => {
     if (!this.paused) {
-      this.draw && this.draw(this.gl)
       this.update && this.update(this.gl)
+      this.draw && this.draw(this.gl)
     }
     requestAnimationFrame(this.loop)
   }
@@ -35,5 +35,8 @@ export default class BaseChapter extends Component {
     this.ui.scene.width = this.S.W = window.innerWidth
     this.ui.scene.height = this.S.H = window.innerHeight
     this.gl.viewport(0, 0, this.S.W, this.S.H)
+    if (this.u_Resolution) {
+      this.gl.uniform2f(this.u_Resolution, this.S.W, this.S.H)
+    }
   }
 }
