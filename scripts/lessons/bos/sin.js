@@ -1,44 +1,36 @@
 import BaseChapter from '~/utils/base-chapter'
 import {initShaders} from '~/lib/cuon-utils'
-import vert from '~/shaders/C3L6/point.vert'
-import frag from '~/shaders/C3L6/point.frag'
+import vert from '~/shaders/bos/sin/sin.vert'
+import frag from '~/shaders/bos/sin/sin.frag'
 
-const ANGLE = 90
-export default class C3L6 extends BaseChapter {
+export default class C3L3 extends BaseChapter {
   prepare(gl) {
     this.points = []
 
     initShaders(gl, vert, frag)
 
-    this.a_Position = gl.getAttribLocation(gl.program, 'a_Position')
-    this.u_xformMatrix = gl.getUniformLocation(gl.program, 'u_xformMatrix')
-
     this.initVertexBuffers()
+    this.u_Resolution = gl.getUniformLocation(this.gl.program, 'u_Resolution')
+    gl.uniform2f(this.u_Resolution, this.S.W, this.S.H)
+
+    this.a_Position = gl.getAttribLocation(gl.program, 'a_Position')
+    if (this.a_Position < 0) {
+      console.error('Failed to retreive attribute `a_Position` location')
+    }
 
     gl.vertexAttribPointer(this.a_Position, 2, gl.FLOAT, false, 0, 0)
     gl.enableVertexAttribArray(this.a_Position)
 
-    const radian = Math.PI * ANGLE / 180.0
-    const cosB = Math.cos(radian)
-    const sinB = Math.sin(radian)
-
-    const xformMatrix = new Float32Array([
-      cosB, sinB, 0, 0,
-      -sinB, cosB, 0, 0,
-      0, 0, 1, 0,
-      0, 0, 0, 1
-    ])
-
-    gl.uniformMatrix4fv(this.u_xformMatrix, false, xformMatrix)
     gl.clearColor(0.0, 0.0, 0.0, 1.0)
     gl.clear(gl.COLOR_BUFFER_BIT)
   }
 
   initVertexBuffers() {
     const vertices = new Float32Array([
-      0.0, 0.5,
-      -0.5, -0.5,
-      0.5, -0.5
+      -1, 1,
+      -1, -1,
+      1, 1,
+      1, -1,
     ])
 
     const vertexBuffer = this.gl.createBuffer()
@@ -52,6 +44,6 @@ export default class C3L6 extends BaseChapter {
 
   draw(gl) {
     gl.clear(gl.COLOR_BUFFER_BIT)
-    gl.drawArrays(gl.TRIANGLES, 0, 3)
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4)
   }
 }

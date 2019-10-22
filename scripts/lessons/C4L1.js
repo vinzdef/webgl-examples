@@ -1,9 +1,9 @@
 import BaseChapter from '~/utils/base-chapter'
+import {Matrix4} from '~/lib/cuon-matrix'
 import {initShaders} from '~/lib/cuon-utils'
-import vert from '~/shaders/C3L6/point.vert'
-import frag from '~/shaders/C3L6/point.frag'
+import vert from '~/shaders/C3L8/point.vert'
+import frag from '~/shaders/C3L8/point.frag'
 
-const ANGLE = 90
 export default class C3L6 extends BaseChapter {
   prepare(gl) {
     this.points = []
@@ -18,18 +18,12 @@ export default class C3L6 extends BaseChapter {
     gl.vertexAttribPointer(this.a_Position, 2, gl.FLOAT, false, 0, 0)
     gl.enableVertexAttribArray(this.a_Position)
 
-    const radian = Math.PI * ANGLE / 180.0
-    const cosB = Math.cos(radian)
-    const sinB = Math.sin(radian)
+    const xformMatrix = new Matrix4()
+    xformMatrix.setTranslate(0.5, 0, 0)
+    xformMatrix.rotate(90, 0, 0, 1)
+    // xformMatrix.scale(0.4, 0.4, 1)
 
-    const xformMatrix = new Float32Array([
-      cosB, sinB, 0, 0,
-      -sinB, cosB, 0, 0,
-      0, 0, 1, 0,
-      0, 0, 0, 1
-    ])
-
-    gl.uniformMatrix4fv(this.u_xformMatrix, false, xformMatrix)
+    gl.uniformMatrix4fv(this.u_xformMatrix, false, xformMatrix.elements)
     gl.clearColor(0.0, 0.0, 0.0, 1.0)
     gl.clear(gl.COLOR_BUFFER_BIT)
   }

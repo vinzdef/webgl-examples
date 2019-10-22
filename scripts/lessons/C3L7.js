@@ -22,11 +22,15 @@ export default class C3L6 extends BaseChapter {
     const cosB = Math.cos(radian)
     const sinB = Math.sin(radian)
 
+    const Tx = 0.5
+    const Ty = 0.5
+    const Tz = 0
+
     const xformMatrix = new Float32Array([
       cosB, sinB, 0, 0,
       -sinB, cosB, 0, 0,
       0, 0, 1, 0,
-      0, 0, 0, 1
+      Tx, Ty, Tz, 1
     ])
 
     gl.uniformMatrix4fv(this.u_xformMatrix, false, xformMatrix)
