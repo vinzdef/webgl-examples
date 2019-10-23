@@ -31,7 +31,7 @@ export default class C5L3 extends BaseChapter {
 
     this.image = new Image()
     this.image.addEventListener('load', this.loadTexture)
-    this.image.src = '/assets/floor.jpg'
+    this.image.src = '/assets/spin.png'
   }
 
   loadTexture = () => {
@@ -42,16 +42,18 @@ export default class C5L3 extends BaseChapter {
     gl.bindTexture(gl.TEXTURE_2D, texture)
 
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR)
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE)
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.MIRRORED_REPEAT)
     gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, image)
   }
 
   initVertexBuffers() {
     const {gl} = this
     const verticesAndTexCoords = new Float32Array([
-      -0.5, 0.5, 0.0, 1.0,
-      -0.5, -0.5, 0.0, 0.0,
-      0.5, 0.5, 1.0, 1.0,
-      0.5, -0.5, 1.0, 0.0
+      -0.5, 0.5, -0.25, 1.25,
+      -0.5, -0.5, -0.25, -0.25,
+      0.5, 0.5, 1.25, 1.25,
+      0.5, -0.5, 1.25, -0.25
     ])
 
     const verticesAndTexCoordsBuffer = gl.createBuffer()
