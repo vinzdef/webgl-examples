@@ -82,12 +82,12 @@ export default class C7L4 extends BaseChapter {
   update() {
     const {gl, keys} = this
 
-    if (keys.includes(68) || keys.includes(39)) {
+    if (keys.includes(65) || keys.includes(37)) {
       this.eye.elements[0] += 0.01
       this.dirty = true
     }
 
-    if (keys.includes(65) || keys.includes(37)) {
+    if (keys.includes(68) || keys.includes(39)) {
       this.eye.elements[0] -= 0.01
       this.dirty = true
     }
