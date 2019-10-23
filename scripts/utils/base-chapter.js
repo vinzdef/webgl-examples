@@ -14,6 +14,10 @@ export default class BaseChapter extends Component {
 
     this.setSizes()
     on(window, 'resize', _ => this.setSizes())
+
+    this.keys = []
+    on(window, 'keydown', this.onKeyDown)
+    on(window, 'keyup', this.onKeyUp)
     this.onClick && on(this.ui.scene, 'click', this.onClick.bind(this))
     requestAnimationFrame(this.init)
   }
@@ -29,6 +33,16 @@ export default class BaseChapter extends Component {
       this.draw && this.draw(this.gl)
     }
     requestAnimationFrame(this.loop)
+  }
+
+  onKeyUp = e => {
+    if (!this.keys.includes(e.keyCode)) return
+    this.keys.splice(this.keys.indexOf(e.keyCode), 1)
+  }
+
+  onKeyDown = e => {
+    if (this.keys.includes(e.keyCode)) return
+    this.keys.push(e.keyCode)
   }
 
   setSizes() {

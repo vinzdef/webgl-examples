@@ -49,6 +49,11 @@ export default class C5L3 extends BaseChapter {
 
   initVertexBuffers() {
     const {gl} = this
+    /**
+     * Setting image coords like this makes it loop (or clamp)
+     * as we're going out of it's bounds (< 0 OR > 1).
+     * */
+
     const verticesAndTexCoords = new Float32Array([
       -0.5, 0.5, -0.25, 1.25,
       -0.5, -0.5, -0.25, -0.25,
