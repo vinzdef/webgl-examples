@@ -16,6 +16,7 @@ module.exports = function watch() {
       )
     )
 
+    gulp.watch(`${paths.src.assets}/**/*`, gulp.series('copy-assets'))
     resolve()
   })
 }

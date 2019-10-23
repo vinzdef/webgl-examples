@@ -17,6 +17,6 @@ module.exports = {
     styles: `${publicPath}/css`,
     scripts: `${publicPath}/js`,
     static: `${publicPath}/static`,
-    assets: `${appPath}/assets`
+    assets: `${publicPath}/assets`
   }
 }

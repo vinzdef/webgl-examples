@@ -14,6 +14,7 @@ gulp.task('dev',
     gulp.parallel(
       'views',
       'styles',
+      'copy-assets'
     ),
     gulp.parallel(
       'browser-sync',
