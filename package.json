@@ -48,7 +48,8 @@
   ],
   "dependencies": {
     "@okiba/component": "^1.0.4",
-    "@okiba/dom": "^1.0.4"
+    "@okiba/dom": "^1.0.4",
+    "@okiba/math": "^1.0.9"
   },
   "devDependencies": {
     "@babel/core": "^7.4.3",
