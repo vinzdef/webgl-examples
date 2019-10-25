@@ -13,7 +13,7 @@ export default class BaseChapter extends Component {
     this.S = {}
 
     this.setSizes()
-    on(window, 'resize', _ => this.setSizes())
+    on(window, 'resize', this.onResize)
 
     this.keys = []
     on(window, 'keydown', this.onKeyDown)
@@ -43,6 +43,13 @@ export default class BaseChapter extends Component {
   onKeyDown = e => {
     if (this.keys.includes(e.keyCode)) return
     this.keys.push(e.keyCode)
+  }
+
+  onResize = () => {
+    this.setSizes()
+    if (this.resize) {
+      this.resize()
+    }
   }
 
   setSizes() {
