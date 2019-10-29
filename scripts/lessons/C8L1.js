@@ -2,27 +2,42 @@
 import BaseChapter from '~/utils/base-chapter'
 import {initShaders} from '~/lib/cuon-utils'
 import {Matrix4, Vector3} from '~/lib/cuon-matrix'
-import vert from '~/shaders/C7L11/point.vert'
-import frag from '~/shaders/C7L11/point.frag'
+import vert from '~/shaders/C8L1/point.vert'
+import frag from '~/shaders/C8L1/point.frag'
 
-export default class C7L11 extends BaseChapter {
+export default class C8L1 extends BaseChapter {
   prepare(gl) {
     this.dirty = true
 
     this.eye = new Vector3()
-    this.eye.elements[0] = 3.06
-    this.eye.elements[1] = 2.5
-    this.eye.elements[2] = 10.0
+    this.eye.elements[0] = 2
+    this.eye.elements[1] = 2
+    this.eye.elements[2] = 15
+
+    this.rotation = 0
 
     initShaders(gl, vert, frag)
 
-    this.initVertexBuffers()
+    this.initBuffers()
+    this.initLighting()
     this.initModelViewMatrix()
     this.initProjectionMatrix()
 
     gl.clearColor(0.0, 0.0, 0.0, 1.0)
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
     gl.enable(gl.DEPTH_TEST)
+  }
+
+  initLighting() {
+    const {gl} = this
+    this.u_LightColor = gl.getUniformLocation(gl.program, 'u_LightColor')
+    this.u_LightDirection = gl.getUniformLocation(gl.program, 'u_LightDirection')
+
+    this.lightDirection = new Vector3([0.5, 3.0, 4.0])
+    this.lightDirection.normalize()
+
+    gl.uniform3f(this.u_LightColor, 1.0, 1.0, 1.0)
+    gl.uniform3fv(this.u_LightDirection, this.lightDirection.elements)
   }
 
   initProjectionMatrix() {
@@ -51,7 +66,7 @@ export default class C7L11 extends BaseChapter {
     gl.uniformMatrix4fv(this.u_ModelViewMatrix, false, this.modelViewMatrix.elements)
   }
 
-  initVertexBuffers() {
+  initBuffers() {
     const {gl} = this
 
     //    v6----- v5
@@ -79,6 +94,15 @@ export default class C7L11 extends BaseChapter {
       1.0, 1.0, 1.0,  1.0, 1.0, 1.0,  1.0, 1.0, 1.0,  1.0, 1.0, 1.0   // v4-v7-v6-v5 back
     ])
 
+    const normals = new Float32Array([    // Normal
+      0.0, 0.0, 1.0,   0.0, 0.0, 1.0,   0.0, 0.0, 1.0,   0.0, 0.0, 1.0,  // v0-v1-v2-v3 front
+      1.0, 0.0, 0.0,   1.0, 0.0, 0.0,   1.0, 0.0, 0.0,   1.0, 0.0, 0.0,  // v0-v3-v4-v5 right
+      0.0, 1.0, 0.0,   0.0, 1.0, 0.0,   0.0, 1.0, 0.0,   0.0, 1.0, 0.0,  // v0-v5-v6-v1 up
+      -1.0, 0.0, 0.0,  -1.0, 0.0, 0.0,  -1.0, 0.0, 0.0,  -1.0, 0.0, 0.0,  // v1-v6-v7-v2 left
+      0.0, -1.0, 0.0,   0.0, -1.0, 0.0,   0.0, -1.0, 0.0,   0.0, -1.0, 0.0,  // v7-v4-v3-v2 down
+      0.0, 0.0, -1.0,   0.0, 0.0, -1.0,   0.0, 0.0, -1.0,   0.0, 0.0, -1.0   // v4-v7-v6-v5 back
+    ])
+
     const indices = new Uint8Array([
       0, 1, 2,   0, 2, 3,    // front
       4, 5, 6,   4, 6, 7,    // right
@@ -89,6 +113,7 @@ export default class C7L11 extends BaseChapter {
     ])
 
     const verticesBuff = gl.createBuffer()
+    const normalsBuff = gl.createBuffer()
     const colorsBuff = gl.createBuffer()
     const indicesBuffer = gl.createBuffer()
 
@@ -104,6 +129,12 @@ export default class C7L11 extends BaseChapter {
     gl.vertexAttribPointer(this.a_Color, 3, gl.FLOAT, false, 0, 0)
     gl.enableVertexAttribArray(this.a_Color)
 
+    this.a_Normal = gl.getAttribLocation(gl.program, 'a_Normal')
+    gl.bindBuffer(gl.ARRAY_BUFFER, normalsBuff)
+    gl.bufferData(gl.ARRAY_BUFFER, normals, gl.STATIC_DRAW)
+    gl.vertexAttribPointer(this.a_Normal, 3, gl.FLOAT, false, 0, 0)
+    gl.enableVertexAttribArray(this.a_Normal)
+
     gl.bindBuffer(gl.ARRAY_BUFFER, null)
 
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indicesBuffer)
@@ -116,21 +147,23 @@ export default class C7L11 extends BaseChapter {
 
     // Left
     if (keys.includes(65) || keys.includes(37)) {
-      this.eye.elements[0] -= 1
+      this.eye.elements[0] -= 0.1
+      // this.rotation += 0.01
       this.dirty = true
     }
 
     // Right
     if (keys.includes(68) || keys.includes(39)) {
-      this.eye.elements[0] += 1
+      this.eye.elements[0] += 0.1
+      // this.rotation -= 0.01
       this.dirty = true
     }
 
     if (this.dirty) {
       this.modelViewMatrix.setLookAt(
         ...this.eye.elements,    // Eye
-        0, 0, -2,            // Look at
-        0, 1, 0              // Up Direction
+        0, 0, -100,   // Look at
+        0, 1, 0     // Up Direction
       )
 
       gl.uniformMatrix4fv(this.u_ModelViewMatrix, false, this.modelViewMatrix.elements)

@@ -137,7 +137,6 @@ export default class C7L11 extends BaseChapter {
     }
   }
 
-  // https://stackoverflow.com/questions/29040083/is-there-a-bug-in-webgl-polygonoffset-or-am-i-missing-something
   draw(gl) {
     if (!this.dirty) return
     this.dirty = false

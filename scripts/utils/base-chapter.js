@@ -11,12 +11,13 @@ export default class BaseChapter extends Component {
     super({el: qs('.Chapter'), ui})
     this.gl = getWebGLContext(this.ui.scene)
     this.S = {}
-
+    this.mouse = {x: 0, y: 0}
     this.setSizes()
     on(window, 'resize', this.onResize)
 
     this.keys = []
     on(window, 'keydown', this.onKeyDown)
+    on(window, 'mousemove', this.onMouseMove)
     on(window, 'keyup', this.onKeyUp)
     this.onClick && on(this.ui.scene, 'click', this.onClick.bind(this))
     requestAnimationFrame(this.init)
@@ -50,6 +51,16 @@ export default class BaseChapter extends Component {
     if (this.resize) {
       this.resize()
     }
+  }
+
+  toClipSpace(n, dim) {
+    return n / dim * 2 - 1
+  }
+
+  onMouseMove = ({clientX, clientY}) => {
+    this.mouse.x = this.toClipSpace(clientX, this.S.W)
+    this.mouse.y = this.toClipSpace(clientY, this.S.H)
+    this.moveMouse && this.moveMouse()
   }
 
   setSizes() {
